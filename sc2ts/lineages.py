@@ -1,7 +1,7 @@
 import json
 import numpy as np
 from collections import defaultdict
-from tqdm.notebook import tqdm
+from tqdm.auto import tqdm
 import pandas as pd
 import time
 
@@ -122,13 +122,11 @@ def get_node_to_mut_dict(ts, ti, linmuts_dict):
     Create dictionary of {node : [(pos, alt) of all mutations just above this node]}
     """
     node_to_mut_dict = MutationContainer()
-    with tqdm(total=ts.num_mutations) as pbar:
-        for m in ts.mutations():
-            pos = int(ts.site(m.site).position)
-            if pos in linmuts_dict.all_positions:
-                alt = ti.mutations_inherited_state[m.id]
-                node_to_mut_dict.add_item(m.node, pos, alt)
-            pbar.update(1)
+    for m in tqdm(ts.mutations(), total=ts.num_mutations, desc="Map muts to nodes"):
+        pos = int(ts.site(m.site).position)
+        if pos in linmuts_dict.all_positions:
+            alt = ti.mutations_inherited_state[m.id]
+            node_to_mut_dict.add_item(m.node, pos, alt)
     return node_to_mut_dict
 
 
