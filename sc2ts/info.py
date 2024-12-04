@@ -1054,7 +1054,7 @@ class TreeInfo:
             )
             rec = Recombinant(
                 causal_strain=strain,
-                causal_date=md["date_added"],
+                causal_date=md[""],
                 causal_lineage=causal_lineage,
                 node=u,
                 hmm_runs=hmm_runs,
@@ -1346,7 +1346,7 @@ class TreeInfo:
             closest_recombinant, path_length = self._get_closest_recombinant(tree, node)
             sample_is_recombinant = False
             if closest_recombinant != -1:
-                recomb_date = self.ts.node(closest_recombinant).metadata["date_added"]
+                recomb_date = self.ts.node(closest_recombinant).metadata["sc2ts"]["date_added"]
                 sample_is_recombinant = recomb_date == str(node_summary["date"])
             summary = {
                 "recombinant": closest_recombinant,
